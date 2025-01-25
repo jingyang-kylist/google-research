@@ -441,7 +441,7 @@ IMAGE_PERCEPTION_PRETRAIN_LOADERS = (
         batch_size=BASE_TRAIN_BATCH_SIZE,
         microbatch_splits=1,
         prefetch=8,
-        metadata=get_classification_metadata(VISION, f'{LOGITS}_example_3'),
+        metadata=get_classification_metadata(VISION, f'{LOGITS}'),
         dataset=datasets_config.IMAGENET32_IMAGE_CLASSIFICATION.copy_and_override({
             'name': f'{datasets_config.IMAGENET32_IMAGE_CLASSIFICATION.name}/cls',
             'modalities': {
