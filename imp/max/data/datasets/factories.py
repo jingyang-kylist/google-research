@@ -382,6 +382,7 @@ class TfdsBase(ThirdPartyDatasetsBase):
       ValueError: if the table name does not exist.
     """
     builder = tfds.builder(dataset_name)
+    builder.download_and_prepare()
     file_format = builder.info.file_format.value  # pylint: disable=attribute-error
 
     if file_format != 'tfrecord':
