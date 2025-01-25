@@ -935,6 +935,34 @@ class ImpLargeImgTrainExperiment(BasePreTrainExperiment):
   )
 
 
+@register_with_class(executors.Executor)
+@validators.validate
+@dataclasses.dataclass
+class ViTHugeImgTrainExperiment(BasePreTrainExperiment):
+  r"""Huge ViT train experiment with image pretraining.
+
+  Follow the instructions in main.py to run an experiment with this config.
+
+  """
+
+  name: str = 'vit_huge.img.train'
+  model: base_model_config.Model = dataclasses.field(
+      default_factory=lambda: perception_model(  # pylint: disable=g-long-lambda
+          model_config.HugeViT, remat=REMAT, dtype=MODEL_DTYPE
+      )
+  )
+  data: base_data_config.ExperimentData = dataclasses.field(
+      default_factory=lambda: BasePreTrainExperimentData(  # pylint: disable=g-long-lambda
+          loaders=data_config.IMAGE_PERCEPTION_PRETRAIN_LOADERS
+      )
+  )
+  optimization: opt_config.Optimization = dataclasses.field(
+      default_factory=lambda: SmallPreTrainOptimization(  # pylint: disable=g-long-lambda
+          loss=IMAGE_PERCEPTION_PRETRAIN_OBJECTIVES
+      )
+  )
+
+
 # ---------------------------------------------------
 # Perception & Generation Experiment configs
 # ---------------------------------------------------

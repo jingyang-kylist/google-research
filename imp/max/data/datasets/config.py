@@ -182,6 +182,28 @@ MNIST_IMAGE_CLASSIFICATION = Dataset(
     factory=DataFactory.TFDS
 )
 
+
+IMAGENET32_IMAGE_CLASSIFICATION = Dataset(
+    name='imagenet32-image-classification',
+    data=TfdsDataDefinition(
+        dataset_name='imagenet_resized/32x32',
+        table='train',
+    ),
+    modalities=Modalities(
+        vision=Vision(
+            parsing_feature_name='image',
+            annotation=Annotation(
+                label=Label(
+                    parsing_label_index_feature_name='label',
+                    num_classes=1000,
+                ),
+            ),
+        ),
+    ),
+    factory=DataFactory.TFDS
+)
+
+
 EXAMPLE_4_VIDEO_AUDIO_TEXT = Dataset(
     name='example-4-video-audio-text',
     data=ThirdPartyDataDefinition(

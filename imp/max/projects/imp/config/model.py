@@ -194,6 +194,19 @@ class HugeIMP(garden_config.IMP):
   text_embed_size: int = d_model
 
 
+@register_with_class(garden.ViT)
+@validators.validate
+@dataclasses.dataclass
+class HugeViT(garden_config.ViT):
+  """Configuration of the Huge ViT (632M)."""
+
+  name: str = 'vit_huge'
+  d_model: int = 1280
+  d_ff: int = 5120
+  num_layers: int = 32
+  num_heads: int = 16
+
+
 @register_with_class(garden.IMP)
 @validators.validate
 @dataclasses.dataclass

@@ -438,10 +438,10 @@ IMAGE_PERCEPTION_PRETRAIN_LOADERS = (
         is_training=True,
         batch_size=BASE_TRAIN_BATCH_SIZE,
         microbatch_splits=1,
-        prefetch=4,
+        prefetch=8,
         metadata=get_classification_metadata(VISION, f'{LOGITS}_example_3'),
-        dataset=datasets_config.MNIST_IMAGE_CLASSIFICATION.copy_and_override({
-            'name': f'{datasets_config.MNIST_IMAGE_CLASSIFICATION.name}/cls',
+        dataset=datasets_config.IMAGENET32_IMAGE_CLASSIFICATION.copy_and_override({
+            'name': f'{datasets_config.IMAGENET32_IMAGE_CLASSIFICATION.name}/cls',
             'modalities': {
                 'vision': {
                     **_vision_override(BASE_IMAGE_INPUT_SIZE),
