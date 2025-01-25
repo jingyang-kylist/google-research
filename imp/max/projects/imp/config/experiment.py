@@ -973,7 +973,8 @@ class ViTHugeImgTrainExperiment(BasePreTrainExperiment):
   name: str = 'vit_huge.img.train'
   model: base_model_config.Model = dataclasses.field(
       default_factory=lambda: vit_perception_model(  # pylint: disable=g-long-lambda
-          model_config.HugeViT, remat=REMAT, dtype=MODEL_DTYPE
+          model_config.HugeViT, remat=REMAT, dtype=MODEL_DTYPE,
+          num_classes=1000
       )
   )
   data: base_data_config.ExperimentData = dataclasses.field(
