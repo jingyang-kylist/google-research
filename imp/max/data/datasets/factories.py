@@ -399,7 +399,10 @@ class TfdsBase(ThirdPartyDatasetsBase):
     tables = {}
     for split in splits:
       # tables[split] = f'{builder.info.name}-{split}.{file_format}@{shards}'
-      tables[split] = f'{builder.info.name}-{split}.{file_format}-{0:05d}-of-{shards:05d}'
+      tables[split] = [
+          f'{builder.info.name}-{split}.{file_format}-{i:05d}-of-{shards:05d}'
+          for i in range(shards)
+      ]
 
     super().__init__(
         base_dir=base_dir,
