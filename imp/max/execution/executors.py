@@ -893,7 +893,7 @@ class BaseExecutor:
                   metrics=metrics, probes=probes, step=current_step)
 
           # save checkpoint
-          if (current_step % self.config.optimization.save_checkpoint_freq == 1
+          if (current_step % self.config.optimization.save_checkpoint_freq == 0
               or current_step == total_steps):
             logging.info('Saving checkpoint at training step %d.', current_step)
             self.ckpt_manager.save(state, dataloaders)

@@ -977,7 +977,7 @@ class TokenRawToEmbed(BaseEmbedProjection):
     if len(input_shape) != self.input_rank:
       raise ValueError(
           f'Expected input rank {self.input_rank} for the {self.modality} '
-          f'modality but {len(input_shape)} was given.'
+          f'modality but {len(input_shape)}, {input_shape} was given.'
           )
 
     # project tokens to embeddings space

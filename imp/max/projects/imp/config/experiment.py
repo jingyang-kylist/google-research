@@ -65,10 +65,10 @@ register_with_class = registry.Registrar.register_with_class
 # Using bfloat16 in the data pipeline and model results in significantly lower
 # memory overhead and slightly faster training times.
 DATA_DTYPE = 'bfloat16'
-MODEL_DTYPE = jnp.float32
+MODEL_DTYPE = jnp.bfloat16
 EVAL_MODEL_DTYPE = jnp.bfloat16
 OBJECTIVE_DTYPE = jnp.float32
-REMAT = 'full'  # Remat significantly reduces memory usage
+REMAT = 'zero'  # Remat significantly reduces memory usage
 SCANNED = True  # Scan significantly reduces compilation time on larger models
 
 BASE_TRAIN_BATCH_SIZE = data_config.BASE_TRAIN_BATCH_SIZE
@@ -195,7 +195,7 @@ SoftmaxCrossEntropyForAudioCls = functools.partial(
 # ----------------------------------------------------------------------
 
 IMAGE_PERCEPTION_PRETRAIN_OBJECTIVES = (
-    CrossModalNCEforVisionText(),
+    # CrossModalNCEforVisionText(),
     SoftmaxCrossEntropyForVisionCls(predictions_key=f'{LOGITS}_example_3'),
 )
 VIDEO_PERCEPTION_PRETRAIN_OBJECTIVES = (
@@ -903,6 +903,34 @@ class SparseMoeImpLargeAllEvalExperiment(SparseMoeImpBaseAllEvalExperiment):
   optimization: opt_config.Optimization = dataclasses.field(
       default_factory=lambda: LargePreTrainOptimization(  # pylint: disable=g-long-lambda
           loss=ALL_PERCEPTION_PRETRAIN_OBJECTIVES,
+      )
+  )
+
+
+@register_with_class(executors.Executor)
+@validators.validate
+@dataclasses.dataclass
+class ImpLargeImgTrainExperiment(BasePreTrainExperiment):
+  r"""Large IMP train experiment with image-text pretraining.
+
+  Follow the instructions in main.py to run an experiment with this config.
+
+  """
+
+  name: str = 'imp_large.img.train'
+  model: base_model_config.Model = dataclasses.field(
+      default_factory=lambda: perception_model(  # pylint: disable=g-long-lambda
+          model_config.XSLargeIMP, remat=REMAT, dtype=MODEL_DTYPE
+      )
+  )
+  data: base_data_config.ExperimentData = dataclasses.field(
+      default_factory=lambda: BasePreTrainExperimentData(  # pylint: disable=g-long-lambda
+          loaders=data_config.IMAGE_PERCEPTION_PRETRAIN_LOADERS
+      )
+  )
+  optimization: opt_config.Optimization = dataclasses.field(
+      default_factory=lambda: SmallPreTrainOptimization(  # pylint: disable=g-long-lambda
+          loss=IMAGE_PERCEPTION_PRETRAIN_OBJECTIVES
       )
   )
 

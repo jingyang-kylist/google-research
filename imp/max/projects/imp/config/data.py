@@ -54,7 +54,7 @@ num_vision_classes = datasets_config.num_vision_classes
 num_audio_classes = datasets_config.num_audio_classes
 
 
-BASE_TRAIN_BATCH_SIZE = 1024 * 8
+BASE_TRAIN_BATCH_SIZE = 1024
 BASE_VIDEO_TRAIN_BATCH_SIZE = BASE_TRAIN_BATCH_SIZE // 4
 BASE_EVAL_BATCH_SIZE = 1024
 VIDEO_EVAL_BATCH_SIZE = 128
@@ -411,24 +411,24 @@ IMAGE_PERCEPTION_PRETRAIN_LOADERS = (
     # -----------------------------
     # Image-Text Loaders
     # -----------------------------
-    data_config.Loader(
-        interval=1,
-        num_epochs=-1,
-        is_training=True,
-        batch_size=BASE_TRAIN_BATCH_SIZE,
-        microbatch_splits=1,
-        prefetch=4,
-        metadata=get_contrastive_metadata((VISION, TEXT)),
-        dataset=datasets_config.EXAMPLE_2_IMAGE_TEXT_THIRDPARTY.copy_and_override({
-            'modalities': {
-                'vision': {
-                    **_vision_override(BASE_IMAGE_INPUT_SIZE),
-                },
-                'text': {
-                    'max_num_tokens': SequenceLength.TINY,
-                },
-            },
-        })),
+    # data_config.Loader(
+    #     interval=1,
+    #     num_epochs=-1,
+    #     is_training=True,
+    #     batch_size=BASE_TRAIN_BATCH_SIZE,
+    #     microbatch_splits=1,
+    #     prefetch=4,
+    #     metadata=get_contrastive_metadata((VISION, TEXT)),
+    #     dataset=datasets_config.EXAMPLE_2_IMAGE_TEXT_THIRDPARTY.copy_and_override({
+    #         'modalities': {
+    #             'vision': {
+    #                 **_vision_override(BASE_IMAGE_INPUT_SIZE),
+    #             },
+    #             'text': {
+    #                 'max_num_tokens': SequenceLength.TINY,
+    #             },
+    #         },
+    #     })),
     # -----------------------------
     # Image Classification Loaders
     # -----------------------------
@@ -440,8 +440,8 @@ IMAGE_PERCEPTION_PRETRAIN_LOADERS = (
         microbatch_splits=1,
         prefetch=4,
         metadata=get_classification_metadata(VISION, f'{LOGITS}_example_3'),
-        dataset=datasets_config.EXAMPLE_3_IMAGE_CLASSIFICATION_WITH_TEXT.copy_and_override({
-            'name': f'{datasets_config.EXAMPLE_3_IMAGE_CLASSIFICATION_WITH_TEXT.name}/cls',
+        dataset=datasets_config.MNIST_IMAGE_CLASSIFICATION.copy_and_override({
+            'name': f'{datasets_config.MNIST_IMAGE_CLASSIFICATION.name}/cls',
             'modalities': {
                 'vision': {
                     **_vision_override(BASE_IMAGE_INPUT_SIZE),

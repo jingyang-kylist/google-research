@@ -1143,6 +1143,14 @@ class IMP(BaseIntegratedMultimodalModel):
       encoder_outputflow = outputflow[DataFeatureRoute.ENCODER]
 
       # Fetch the inputs data
+      # def print_nested_keys(d, indent=0):
+      #   """Recursively print keys of a nested dictionary with indentation."""
+      #   for key, value in d.items():
+      #     print(" " * indent + str(key))
+      #     if isinstance(value, dict):
+      #       print_nested_keys(value, indent + 2)
+      # print_nested_keys(data)
+
       encoder_inputdata = data[DataFeatureType.INPUTS][DataFeatureRoute.ENCODER]
 
       # Check if the dataflow exists in the inputdata

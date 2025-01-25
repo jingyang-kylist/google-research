@@ -45,6 +45,7 @@ Bundle = data_config.Bundle
 Dataset = data_config.Dataset
 SeqioDataDefinition = data_config.SeqioDataDefinition
 ThirdPartyDataDefinition = data_config.ThirdPartyDataDefinition
+TfdsDataDefinition = data_config.TfdsDataDefinition
 
 
 INPUT_ENCODER_TEXT_RAW_KEY = processing.get_flattened_key(
@@ -145,32 +146,40 @@ EXAMPLE_2_IMAGE_TEXT_THIRDPARTY = Dataset(
 
 EXAMPLE_3_IMAGE_CLASSIFICATION_WITH_TEXT = Dataset(
     name='example-3-image-classification-with-text',
-    data=ThirdPartyDataDefinition(
-        base_dir='/path/to/tfrecord_dir',
-        tables={'train': 'train_split_filename-*of*',
-                'test': 'test_split_filename-*of*'},
+    data=TfdsDataDefinition(
+        dataset_name='mnist',
         table='train',
-        num_examples={
-            'train': 1000,
-            'test': 50,
-        },
-        source=constants.TFRECORD,
-        raw_data_format=constants.TF_EXAMPLE,
     ),
     modalities=Modalities(
         vision=Vision(
             annotation=Annotation(
                 label=Label(
                     parsing_label_index_feature_name='image/class/label',
-                    num_classes=1000,
+                    num_classes=10,
                 ),
             ),
         ),
-        text=TextFromLabel(
-            parsing_label_name_feature_name='image/class/text',
-            max_num_tokens=SequenceLength.SMALL,
+    ),
+)
+
+MNIST_IMAGE_CLASSIFICATION = Dataset(
+    name='mnist-image-classification',
+    data=TfdsDataDefinition(
+        dataset_name='mnist',
+        table='train',
+    ),
+    modalities=Modalities(
+        vision=Vision(
+            parsing_feature_name='image',
+            annotation=Annotation(
+                label=Label(
+                    parsing_label_index_feature_name='label',
+                    num_classes=10,
+                ),
+            ),
         ),
     ),
+    factory=DataFactory.TFDS
 )
 
 EXAMPLE_4_VIDEO_AUDIO_TEXT = Dataset(
@@ -213,7 +222,7 @@ EXAMPLE_5_AUDIO_CLASSIFICATION_WITH_TEXT = Dataset(
             modality=Modality.AUDIO,
             max_num_tokens=SequenceLength.TINY),
     ),
-    factory=DataFactory.ESC
+    factory=DataFactory.TFDS
 )
 
 EXAMPLE_6_IMAGE_TEXT_THIRDPARTY_WITH_BUNDLES = Dataset(

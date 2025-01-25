@@ -18,7 +18,9 @@
 from typing import Any, Iterable
 
 from absl import logging
+from flax import traverse_util
 import jax
+import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
@@ -258,6 +260,30 @@ class DataLoader:
       dataset = all_datasets[0]
 
     dataset = tfds.as_numpy(dataset)
+
+    # dataset = tfds.load('mnist', split='train', shuffle_files=True)
+    # dataset = dataset.repeat(self.num_epochs)
+    # # add dictionary structure construction
+    # I = np.eye(1000, dtype=np.int32)
+
+    # # 8192 / BViT (630M) 2K
+    # dataset = dataset.map(lambda x: {
+    #     # + bias / uniform
+    #     'inputs/encoder/vision/token_raw': np.random.normal(size=(1, 1, 3072)).astype(np.float32),
+    #     'inputs/encoder/vision/token_coordinate': np.random.uniform(0, 1, (1, 1, 3)).astype(np.float32),
+    #     'inputs/encoder/vision/token_position_id': np.random.randint(0, 500, (1, 1), dtype=np.int32),
+    #     'targets/label_classifier/vision/label': I[np.random.randint(0, 1000, (1, ))],
+    # })
+    # # unflatten dictionary
+    # dataset = dataset.map(lambda x: traverse_util.unflatten_dict(x, sep='/'))
+    # dataset = dataset.batch(self.per_host_batch_size, drop_remainder=self.drop_remainder)
+    # dataset = tfds.as_numpy(dataset)
+
+    # for example in dataset:
+    #   for key, value in example.items():
+    #     print(key, value.shape)
+    #   break
+    # exit()
 
     if self.metadata is not None:
       dataset = self.add_metadata(dataset)

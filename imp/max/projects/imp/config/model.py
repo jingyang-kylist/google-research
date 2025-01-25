@@ -152,6 +152,21 @@ class XLargeIMP(garden_config.IMP):
 @register_with_class(garden.IMP)
 @validators.validate
 @dataclasses.dataclass
+class XSLargeIMP(garden_config.IMP):
+  """Configuration of the XS-Large Integrated Multimodal Transformer (~620M)."""
+
+  name: str = 'imp_xslarge'
+  d_model: int = 1536
+  d_ff: int = 4096
+  num_layers: int = 28
+  num_heads: int = 24
+  d_post_proj: int = 1536
+  text_embed_size: int = d_model
+
+
+@register_with_class(garden.IMP)
+@validators.validate
+@dataclasses.dataclass
 class XXLargeIMP(garden_config.IMP):
   """Configuration of the XX-Large Integrated Multimodal Transformer (713M)."""
 

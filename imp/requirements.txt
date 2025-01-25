@@ -4,8 +4,8 @@ chex
 dm-tree
 fiddle
 flax
-git+git://github.com/deepmind/dmvr.git
-git+git://github.com/google-research/t5x.git
+git+https://github.com/deepmind/dmvr.git
+git+https://github.com/google-research/t5x.git
 google-vizier
 jax
 numpy
@@ -19,3 +19,5 @@ tensorflow_datasets
 tensorflow_probability
 tensorstore
 xmanager
+tf-keras
+equinox

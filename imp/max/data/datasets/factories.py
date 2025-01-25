@@ -248,7 +248,7 @@ class ThirdPartyDatasetsBase(MultimodalDataset, abc.ABC):
                base_dir,
                table = None,
                num_examples = None,
-               source = constants.SSTABLE,
+               source = constants.TFRECORD,
                raw_data_format = constants.TF_SEQUENCE_EXAMPLE,
                prop_data = 1.0,
                prop_seed = None,
@@ -299,6 +299,7 @@ class ThirdPartyDatasetsBase(MultimodalDataset, abc.ABC):
           prop_seed=prop_seed,
           num_shards=num_shards,
           shard_index=shard_index)
+    print('shards: ', shards)
     logging.info('Using %d table shards for %s:%s',
                  len(shards), base_dir, table_relative_path)
 
@@ -397,7 +398,8 @@ class TfdsBase(ThirdPartyDatasetsBase):
 
     tables = {}
     for split in splits:
-      tables[split] = f'{builder.info.name}-{split}.{file_format}@{shards}'
+      # tables[split] = f'{builder.info.name}-{split}.{file_format}@{shards}'
+      tables[split] = f'{builder.info.name}-{split}.{file_format}-{0:05d}-of-{shards:05d}'
 
     super().__init__(
         base_dir=base_dir,
