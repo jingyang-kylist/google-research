@@ -949,7 +949,7 @@ class ImpLargeImgTrainExperiment(BasePreTrainExperiment):
       )
   )
   data: base_data_config.ExperimentData = dataclasses.field(
-      default_factory=lambda: BasePreTrainExperimentData(  # pylint: disable=g-long-lambda
+      default_factory=lambda: BaseViTPreTrainExperimentData(  # pylint: disable=g-long-lambda
           loaders=data_config.IMAGE_PERCEPTION_PRETRAIN_LOADERS
       )
   )
