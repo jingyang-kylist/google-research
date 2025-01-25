@@ -65,7 +65,7 @@ register_with_class = registry.Registrar.register_with_class
 # Using bfloat16 in the data pipeline and model results in significantly lower
 # memory overhead and slightly faster training times.
 DATA_DTYPE = 'bfloat16'
-MODEL_DTYPE = jnp.bfloat16
+MODEL_DTYPE = jnp.float32
 EVAL_MODEL_DTYPE = jnp.bfloat16
 OBJECTIVE_DTYPE = jnp.float32
 REMAT = 'zero'  # Remat significantly reduces memory usage
@@ -114,6 +114,19 @@ def perception_model(config,
       waveform_classes=data_config.AUDIO_CLASSES,
       spectrogram_classes=data_config.AUDIO_CLASSES,
       text_classes=data_config.TEXT_CLASSES,
+      scanned_layers=SCANNED)
+  return config(**kwargs)
+
+
+def vit_perception_model(config,
+                         **kwargs):
+  """Apply arguments for a ViT perception model."""
+  # Use functools to allow overrides of these default args.
+  config = functools.partial(
+      config,
+      batch_size=DUMMY_BATCH_SIZE,
+      image_size=MAX_VIDEO_INPUT_SIZE,
+      patch_size=VIDEO_PATCH_SIZE,
       scanned_layers=SCANNED)
   return config(**kwargs)
 
@@ -947,7 +960,7 @@ class ViTHugeImgTrainExperiment(BasePreTrainExperiment):
 
   name: str = 'vit_huge.img.train'
   model: base_model_config.Model = dataclasses.field(
-      default_factory=lambda: perception_model(  # pylint: disable=g-long-lambda
+      default_factory=lambda: vit_perception_model(  # pylint: disable=g-long-lambda
           model_config.HugeViT, remat=REMAT, dtype=MODEL_DTYPE
       )
   )
