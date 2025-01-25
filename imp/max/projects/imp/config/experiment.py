@@ -124,9 +124,9 @@ def vit_perception_model(config,
   # Use functools to allow overrides of these default args.
   config = functools.partial(
       config,
-      batch_size=DUMMY_BATCH_SIZE,
-      image_size=MAX_VIDEO_INPUT_SIZE,
-      patch_size=VIDEO_PATCH_SIZE,
+      batch_size=data_config.BASE_TRAIN_BATCH_SIZE,
+      image_size=(1, 224, 224, 3),
+      patch_size=(1, 16, 16),
       scanned_layers=SCANNED)
   return config(**kwargs)
 
