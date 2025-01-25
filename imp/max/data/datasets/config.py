@@ -193,6 +193,7 @@ IMAGENET32_IMAGE_CLASSIFICATION = Dataset(
         vision=Vision(
             parsing_feature_name='image',
             temporal_patch_size=1,
+            spatio_temporal_token_coordinate=False,
             spatial_patch_size=(16, 16),
             annotation=Annotation(
                 label=Label(
