@@ -65,6 +65,8 @@ TINY_EVAL_BATCH_SIZE = 256  # For datasets with a small number of examples
 VIDEO_PATCH_SIZE = (4, 16, 16)
 BASE_VIDEO_INPUT_SIZE = (16, 256, 256, 3)
 BASE_IMAGE_INPUT_SIZE = (4, 256, 256, 3)
+VIT_BASE_IMAGE_INPUT_SIZE = (1, 224, 224, 3)
+VIT_IMAGE_PATCH_SIZE = (1, 16, 16)
 LOWRES_VIDEO_INPUT_SIZE = (16, 128, 128, 3)
 
 # Audio params.
@@ -444,7 +446,7 @@ IMAGE_PERCEPTION_PRETRAIN_LOADERS = (
             'name': f'{datasets_config.IMAGENET32_IMAGE_CLASSIFICATION.name}/cls',
             'modalities': {
                 'vision': {
-                    **_vision_override(BASE_IMAGE_INPUT_SIZE),
+                    **_vision_override(VIT_BASE_IMAGE_INPUT_SIZE),
                     'annotation': {'label': {'normalize': True}},
                 },
                 'text': None,
