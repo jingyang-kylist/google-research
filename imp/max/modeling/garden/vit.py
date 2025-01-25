@@ -16,6 +16,7 @@
 """Vision Transformer model implemented in Jax/Flax."""
 
 import jax
+import jax.numpy as jnp
 from jax import lax
 import numpy as np
 
@@ -183,11 +184,15 @@ class ViT(mnn.Model):
         utils.get_patched_shape(self.image_size[:-1], self.patch_size))
     token_raw = jax.random.uniform(
         jax.random.key(0), (self.batch_size, 1, num_tokens, num_pixels))
+    patched_shape = utils.get_patched_shape(self.image_size[:-1], self.patch_size)
+    token_coordinate = jnp.tile(utils.construct_3d_positions(
+        *patched_shape), (self.batch_size, 1, 1, 1))
     data = {
         INPUTS: {
             ENCODER: {
                 VISION: {
-                    TOKEN_RAW: token_raw
+                    TOKEN_RAW: token_raw,
+                    TOKEN_COORDINATE: token_coordinate,
                 },
             },
         },
