@@ -88,6 +88,9 @@ VIDEO_PATCH_SIZE = data_config.VIDEO_PATCH_SIZE
 WAVEFORM_PATCH_SIZE = data_config.WAVEFORM_PATCH_SIZE
 SPECTROGRAM_PATCH_SIZE = data_config.SPECTROGRAM_PATCH_SIZE
 
+IMAGE_INPUT_SIZE = (1, 224, 224, 3)
+IMAGE_PATCH_SIZE = (1, 16, 16)
+
 GENERATIVE_VISON_TARGETS = (
     np.prod(VIDEO_PATCH_SIZE) * data_config.BASE_VIDEO_INPUT_SIZE[-1])
 GENERATIVE_SPECTROGRAM_TARGETS = np.prod(SPECTROGRAM_PATCH_SIZE)
@@ -124,9 +127,9 @@ def vit_perception_model(config,
   # Use functools to allow overrides of these default args.
   config = functools.partial(
       config,
-      batch_size=data_config.BASE_TRAIN_BATCH_SIZE,
-      image_size=(1, 224, 224, 3),
-      patch_size=(1, 16, 16),
+      batch_size=BASE_BATCH_SIZE,
+      image_size=IMAGE_INPUT_SIZE,
+      patch_size=IMAGE_PATCH_SIZE,
       scanned_layers=SCANNED)
   return config(**kwargs)
 
@@ -329,6 +332,15 @@ class BaseEvalExperimentData(BaseExperimentData):
 
   shuffle: bool = False
   checkpointing: bool = False
+
+
+@validators.validate
+@dataclasses.dataclass
+class BaseViTPreTrainExperimentData(BasePreTrainExperimentData):
+  """Pretrain base ViT experiment data configuration."""
+
+  vision_spatial_patch_size: tuple[int, int] = IMAGE_PATCH_SIZE[1:]
+  vision_temporal_patch_size: int = IMAGE_PATCH_SIZE[0]
 
 
 # -------------------------------
