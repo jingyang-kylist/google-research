@@ -920,7 +920,7 @@ class ImpLargeImgTrainExperiment(BasePreTrainExperiment):
   name: str = 'imp_large.img.train'
   model: base_model_config.Model = dataclasses.field(
       default_factory=lambda: perception_model(  # pylint: disable=g-long-lambda
-          model_config.XSLargeIMP, remat=REMAT, dtype=MODEL_DTYPE
+          model_config.LargeIMP, remat=REMAT, dtype=MODEL_DTYPE
       )
   )
   data: base_data_config.ExperimentData = dataclasses.field(
