@@ -16,5 +16,6 @@ python -m pip install -r imp/requirements.txt --use-deprecated=legacy-resolver
 python -m pip install git+https://github.com/jingyang-kylist/CLIP.git --no-deps
 python -m pip install ftfy importlib_resources
 
+# run with configurable MODEL_DTYPE and BATCH_SIZE
 MODEL_DTYPE=fp32 BATCH_SIZE=832 python -m imp.max.projects.imp.main --config_name=vit_huge.img.train
 ```
