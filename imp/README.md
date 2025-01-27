@@ -4,18 +4,17 @@
 # !! assuming to be within the docker image that Gabe builds
 
 # environment setup
-git clone -n --depth=1 --filter=tree:0 https://github.com/jingyang-kylist/google-research.git
+git init google-research
 cd google-research
-git sparse-checkout set --no-cone /imp; git checkout
+git remote add origin https://github.com/jingyang-kylist/google-research.git
+git sparse-checkout init --cone
+git sparse-checkout set imp
+git fetch --filter=blob:none --no-tags origin vit-test
+git checkout vit-test
 
 python -m pip install -r imp/requirements.txt --use-deprecated=legacy-resolver
 python -m pip install git+https://github.com/jingyang-kylist/CLIP.git --no-deps
 python -m pip install ftfy importlib_resources
 
-# 1. run imp training with batch size 1024 -> error
-python -m imp.max.projects.imp.main --config_name=imp_large.img.train
-
-# 2. modify imp/max/projects/imp/config/data.py:57 `BASE_TRAIN_BATCH_SIZE = 512`
-#    run imp training with batch size 512 -> no error
-python -m imp.max.projects.imp.main --config_name=imp_large.img.train
+MODEL_DTYPE=fp32 BATCH_SIZE=832 python -m imp.max.projects.imp.main --config_name=vit_huge.img.train
 ```
