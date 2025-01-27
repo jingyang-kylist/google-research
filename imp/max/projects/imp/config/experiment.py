@@ -66,7 +66,13 @@ register_with_class = registry.Registrar.register_with_class
 # Using bfloat16 in the data pipeline and model results in significantly lower
 # memory overhead and slightly faster training times.
 DATA_DTYPE = 'bfloat16'
-MODEL_DTYPE = os.environ.get('MODEL_DTYPE', jnp.bfloat16) # jnp.bfloat16
+MODEL_DTYPE_STR = os.environ.get('MODEL_DTYPE', 'bf16')
+if MODEL_DTYPE_STR == 'bf16':
+  MODEL_DTYPE = jnp.bfloat16
+elif MODEL_DTYPE_STR == 'fp32':
+  MODEL_DTYPE = jnp.float32
+else:
+  raise ValueError(f'Invalid MODEL_DTYPE: {MODEL_DTYPE_STR}')
 print(f'****** MODEL_DTYPE: {MODEL_DTYPE} ******')
 EVAL_MODEL_DTYPE = jnp.bfloat16
 OBJECTIVE_DTYPE = jnp.float32
