@@ -451,9 +451,13 @@ def index_to_mask(
   indices, _ = _normalize_indices(indices)
 
   iota = lax.iota(jnp.int32, length)
+  # idx_one_hot = jnp.array(
+  #     indices[Ellipsis, jnp.newaxis] == iota,
+  #     dtype=jnp.int32)  # (n_indices, length)
   idx_one_hot = jnp.array(
-      indices[Ellipsis, jnp.newaxis] == iota,
-      dtype=jnp.int32)  # (n_indices, length)
+      jnp.where(indices[Ellipsis, jnp.newaxis] == iota, 1.0, 0.0),
+      dtype=jnp.int32
+  ) # (n_indices, length)
   idx_zero_one = idx_one_hot.sum(axis=0)
 
   return idx_zero_one
@@ -536,8 +540,11 @@ def take_along_axis(
   axis_length = inputs.shape[axis]
   iota = lax.iota(jnp.int32, axis_length)
 
+  # idx_one_hot = jnp.array(
+  #     indices[Ellipsis, jnp.newaxis] == iota,
+  #     dtype=inputs.dtype)  # (n_indices, axis_length)
   idx_one_hot = jnp.array(
-      indices[Ellipsis, jnp.newaxis] == iota,
+      jnp.where(indices[Ellipsis, jnp.newaxis] == iota, 1.0, 0.0),
       dtype=inputs.dtype)  # (n_indices, axis_length)
 
   lhs_contracting_dims = (axis,)  # The `axis` dimension
@@ -657,8 +664,11 @@ def scatter_along_axis(
   # array is broadcastable to 'inputs'.
   n_axis = inputs.shape[axis]
   iota = lax.iota(jnp.int32, n_axis)
+  # idx_one_hot = jnp.array(
+  #     indices[Ellipsis, jnp.newaxis] == iota,
+  #     dtype=inputs.dtype)  # (*batch_dims, n_indices, n_axis)
   idx_one_hot = jnp.array(
-      indices[Ellipsis, jnp.newaxis] == iota,
+      jnp.where(indices[Ellipsis, jnp.newaxis] == iota, 1.0, 0.0),
       dtype=inputs.dtype)  # (*batch_dims, n_indices, n_axis)
 
   # The 'axis' dimension of 'updates'

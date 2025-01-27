@@ -165,7 +165,10 @@ class Embed(nn.Module):
 
     if self.spmd_enabled:
       iota = lax.iota(jnp.int32, self.num_embeddings)
-      one_hot = jnp.array(inputs[Ellipsis, jnp.newaxis] == iota, dtype=self.dtype)
+      # one_hot = jnp.array(inputs[Ellipsis, jnp.newaxis] == iota, dtype=self.dtype)
+      one_hot = jnp.array(
+          jnp.where(inputs[Ellipsis, jnp.newaxis] == iota, 1.0, 0.0), dtype=self.dtype
+      )
       output = self.lookup_dot_general(
           one_hot, embedding,
           (((one_hot.ndim - 1,), (0,)), ((), ())),
