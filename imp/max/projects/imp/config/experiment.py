@@ -17,6 +17,7 @@
 
 import dataclasses
 import functools
+import os
 
 import fiddle as fdl
 from jax import numpy as jnp
@@ -65,7 +66,8 @@ register_with_class = registry.Registrar.register_with_class
 # Using bfloat16 in the data pipeline and model results in significantly lower
 # memory overhead and slightly faster training times.
 DATA_DTYPE = 'bfloat16'
-MODEL_DTYPE = jnp.bfloat16
+MODEL_DTYPE = os.environ.get('MODEL_DTYPE', jnp.bfloat16) # jnp.bfloat16
+print(f'****** MODEL_DTYPE: {MODEL_DTYPE} ******')
 EVAL_MODEL_DTYPE = jnp.bfloat16
 OBJECTIVE_DTYPE = jnp.float32
 REMAT = 'zero'  # Remat significantly reduces memory usage

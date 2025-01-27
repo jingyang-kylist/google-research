@@ -15,6 +15,7 @@
 
 """Configuration of the data pipeline."""
 
+import os
 from typing import Any, Sequence
 
 from imp.max.core import constants
@@ -54,7 +55,8 @@ num_vision_classes = datasets_config.num_vision_classes
 num_audio_classes = datasets_config.num_audio_classes
 
 
-BASE_TRAIN_BATCH_SIZE = 768
+BASE_TRAIN_BATCH_SIZE = os.environ.get('BATCH_SIZE', 768)
+print(f'****** BATCH_SIZE: {BASE_TRAIN_BATCH_SIZE} ******')
 BASE_VIDEO_TRAIN_BATCH_SIZE = BASE_TRAIN_BATCH_SIZE // 4
 BASE_EVAL_BATCH_SIZE = 1024
 VIDEO_EVAL_BATCH_SIZE = 128
