@@ -1,4 +1,4 @@
-# Reproducing LLVM error
+# Reproducing the slow FP32 training
 
 ```bash
 # !! assuming to be within the docker image that Gabe builds
