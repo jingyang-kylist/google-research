@@ -65,11 +65,11 @@ register_with_class = registry.Registrar.register_with_class
 # Using bfloat16 in the data pipeline and model results in significantly lower
 # memory overhead and slightly faster training times.
 DATA_DTYPE = 'bfloat16'
-MODEL_DTYPE = jnp.float32
+MODEL_DTYPE = jnp.bfloat16
 EVAL_MODEL_DTYPE = jnp.bfloat16
 OBJECTIVE_DTYPE = jnp.float32
 REMAT = 'zero'  # Remat significantly reduces memory usage
-SCANNED = True  # Scan significantly reduces compilation time on larger models
+SCANNED = False  # Scan significantly reduces compilation time on larger models
 
 BASE_TRAIN_BATCH_SIZE = data_config.BASE_TRAIN_BATCH_SIZE
 EVAL_BATCH_SIZE = data_config.BASE_EVAL_BATCH_SIZE
